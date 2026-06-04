@@ -344,16 +344,21 @@ a {
 
 .note-article blockquote,
 .note-idea blockquote {
-  margin: 14px 0;
-  padding: 10px 14px;
-  border-left: 3px solid var(--green);
-  border-radius: 0 var(--radius) var(--radius) 0;
-  background: rgba(34, 199, 167, 0.08);
+  margin: 14px 0 22px;
+  padding: 14px 18px;
+  border: 1px solid #333a47;
+  border-left: 3px solid var(--blue);
+  border-radius: var(--radius);
+  background: #1f242c;
 }
 
 .note-article blockquote p,
 .note-article blockquote li {
-  color: var(--text);
+  color: #d4d7df;
+}
+
+.note-article blockquote pre:not(.code-pre) {
+  background: #232832;
 }
 
 .note-article blockquote > :last-child,
@@ -388,6 +393,10 @@ a {
   margin: 18px auto;
   border-radius: var(--radius);
   background: #f8fafc;
+}
+
+.problem-statement {
+  margin-bottom: 8px;
 }
 
 .note-article pre:not(.code-pre) {
@@ -441,6 +450,7 @@ a {
 .problem-card,
 .stat-card,
 .company-card,
+.review-note-panel,
 .code-card {
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -756,6 +766,53 @@ a {
   flex-wrap: wrap;
   gap: 10px;
   margin: 24px 0 8px;
+}
+
+.review-note-panel {
+  margin: 20px 0 8px;
+  padding: 16px;
+}
+
+.review-note-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.review-note-head h3 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.review-note-head span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.review-note-panel textarea {
+  display: block;
+  width: 100%;
+  min-height: 170px;
+  resize: vertical;
+  padding: 13px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  outline: 0;
+  background: #1c1f27;
+  color: var(--strong);
+  font: 500 14px/1.7 "Inter", "Noto Sans SC", system-ui, sans-serif;
+}
+
+.review-note-panel textarea:focus {
+  border-color: rgba(96, 184, 255, 0.68);
+  box-shadow: 0 0 0 3px rgba(96, 184, 255, 0.14);
+}
+
+.review-note-panel textarea::placeholder {
+  color: var(--faint);
 }
 
 .code-card {
@@ -1103,6 +1160,7 @@ body.light .callout,
 body.light .problem-card,
 body.light .stat-card,
 body.light .company-card,
+body.light .review-note-panel,
 body.light .roadmap-item,
 body.light .search-box input,
 body.light .filter-group {
@@ -1140,6 +1198,22 @@ body.light .doc-content :not(pre) > code {
   color: #075985;
 }
 
+body.light .note-article blockquote,
+body.light .note-idea blockquote {
+  border-color: #d8dee8;
+  border-left-color: #1677c8;
+  background: #f8fbff;
+}
+
+body.light .note-article blockquote p,
+body.light .note-article blockquote li {
+  color: #344152;
+}
+
+body.light .note-article blockquote pre:not(.code-pre) {
+  background: #f1f5f9;
+}
+
 body.light .note-article img {
   border: 1px solid var(--line);
   background: #ffffff;
@@ -1151,6 +1225,11 @@ body.light .note-article pre:not(.code-pre) {
 
 body.light .note-article pre:not(.code-pre) code {
   color: #273242;
+}
+
+body.light .review-note-panel textarea {
+  background: #fffdfa;
+  color: var(--strong);
 }
 
 body.light .code-window {

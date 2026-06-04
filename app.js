@@ -112,6 +112,14 @@ function saveCompleted() {
   localStorage.setItem("af-completed", JSON.stringify([...state.completed]));
 }
 
+function reviewNoteStorageKey(problemId) {
+  return `af-review-note-${problemId}`;
+}
+
+function getReviewNote(problemId) {
+  return localStorage.getItem(reviewNoteStorageKey(problemId)) || "";
+}
+
 function problemById(id) {
   return problems.find((problem) => problem.id === id) || problems[0];
 }
@@ -194,6 +202,27 @@ function renderNoteMarkdown(markdown) {
     html = html.replace(`@@AF_CPP_BLOCK_${index}@@`, renderCodeBlock(code, "cpp"));
   });
   return html;
+}
+
+function splitProblemNote(markdown) {
+  const lines = (markdown || "").split("\n");
+  if (!lines[0]?.trim().startsWith(">")) return { statement: markdown || "", notes: "" };
+
+  let index = 0;
+  while (index < lines.length) {
+    const trimmed = lines[index].trim();
+    const nextStartsQuote = lines[index + 1]?.trim().startsWith(">");
+    if (trimmed.startsWith(">") || (!trimmed && nextStartsQuote)) {
+      index += 1;
+      continue;
+    }
+    break;
+  }
+
+  return {
+    statement: lines.slice(0, index).join("\n").trim(),
+    notes: lines.slice(index).join("\n").trim(),
+  };
 }
 
 function problemSummary(problem) {
@@ -504,7 +533,10 @@ function problemCard(problem) {
 function renderProblemDetail(problemId) {
   const problem = problemById(problemId);
   const done = state.completed.has(problem.id);
-  renderToc(["笔记内容", "复盘"]);
+  const reviewNote = getReviewNote(problem.id);
+  const detailMarkdown = problem.noteMarkdown || problem.ideaMarkdown || problem.description || problemSummary(problem);
+  const { statement, notes } = splitProblemNote(detailMarkdown);
+  renderToc(notes ? ["题目", "思路与代码", "复盘"] : ["题目", "复盘"]);
   els.content.innerHTML = `
     <h1>${problem.title}</h1>
     <div class="article-meta compact-meta">
@@ -520,14 +552,33 @@ function renderProblemDetail(problemId) {
       </label>
       <button class="ghost-button" data-focus="${problem.id}">${icon("pin")}加入今日</button>
     </div>
-    <h2 id="笔记内容">笔记内容</h2>
-    <div class="note-article">${renderNoteMarkdown(problem.noteMarkdown || problem.ideaMarkdown || problem.description || problemSummary(problem))}</div>
+    <h2 id="题目">题目</h2>
+    <div class="note-article problem-statement">${renderNoteMarkdown(statement)}</div>
+    ${
+      notes
+        ? `
+          <h2 id="思路与代码">思路与代码</h2>
+          <div class="note-article">${renderNoteMarkdown(notes)}</div>
+        `
+        : ""
+    }
     <h2 id="复盘">复盘</h2>
     <ul>
       <li>能否一句话说出为什么用 <strong>${problem.topic}</strong>？</li>
       <li>边界条件是否覆盖空输入、重复元素和下标范围？</li>
       <li>能否说明时间复杂度和空间复杂度？</li>
     </ul>
+    <section class="review-note-panel" aria-labelledby="review-note-title">
+      <div class="review-note-head">
+        <h3 id="review-note-title">我的批注</h3>
+        <span data-review-status="${problem.id}">${reviewNote ? "已保存" : "自动保存"}</span>
+      </div>
+      <textarea
+        data-review-note="${problem.id}"
+        spellcheck="false"
+        placeholder="把你的口述答案、卡住的边界、复杂度表达或二刷提醒写在这里。"
+      >${escapeHtml(reviewNote)}</textarea>
+    </section>
   `;
 }
 
@@ -548,6 +599,14 @@ function render() {
 
 function bindEvents() {
   document.body.addEventListener("input", (event) => {
+    const reviewNote = event.target.closest("[data-review-note]");
+    if (reviewNote) {
+      localStorage.setItem(reviewNoteStorageKey(reviewNote.dataset.reviewNote), reviewNote.value);
+      const status = document.querySelector(`[data-review-status="${reviewNote.dataset.reviewNote}"]`);
+      if (status) status.textContent = "已保存";
+      return;
+    }
+
     const search = event.target.closest("#problemSearch");
     if (!search) return;
 
