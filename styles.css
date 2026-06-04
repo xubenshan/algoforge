@@ -344,21 +344,21 @@ a {
 
 .note-article blockquote,
 .note-idea blockquote {
-  margin: 14px 0 22px;
-  padding: 14px 18px;
-  border: 1px solid #333a47;
-  border-left: 3px solid var(--blue);
-  border-radius: var(--radius);
-  background: #1f242c;
+  margin: 16px 0 24px;
+  padding: 4px 0 4px 22px;
+  border: 0;
+  border-left: 4px solid #525866;
+  border-radius: 0;
+  background: transparent;
 }
 
 .note-article blockquote p,
 .note-article blockquote li {
-  color: #d4d7df;
+  color: #aeb3bf;
 }
 
 .note-article blockquote pre:not(.code-pre) {
-  background: #232832;
+  background: #20232b;
 }
 
 .note-article blockquote > :last-child,
@@ -1200,14 +1200,13 @@ body.light .doc-content :not(pre) > code {
 
 body.light .note-article blockquote,
 body.light .note-idea blockquote {
-  border-color: #d8dee8;
-  border-left-color: #1677c8;
-  background: #f8fbff;
+  border-left-color: #a3adba;
+  background: transparent;
 }
 
 body.light .note-article blockquote p,
 body.light .note-article blockquote li {
-  color: #344152;
+  color: #667085;
 }
 
 body.light .note-article blockquote pre:not(.code-pre) {
