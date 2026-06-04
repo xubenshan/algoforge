@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>AlgoForge | 秋招算法学习</title>
+    <link
+      rel="icon"
+      href="assets/algoforge-logo.png?v=20260604-logo"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css?v=20260604-note-render" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#intro" data-route="intro" aria-label="AlgoForge 首页">
+        <img class="brand-avatar" src="assets/algoforge-logo.png?v=20260604-logo" alt="AlgoForge" />
+        <strong>AlgoForge</strong>
+      </a>
+
+      <nav class="top-nav" aria-label="主导航">
+        <button data-route="roadmap"><i data-lucide="map"></i>路线</button>
+        <button class="is-active" data-route="problems"><i data-lucide="book-open"></i>题单</button>
+        <button data-route="company"><i data-lucide="building-2"></i>公司题</button>
+        <button data-route="review"><i data-lucide="messages-square"></i>复盘</button>
+      </nav>
+
+      <div class="top-tools">
+        <button class="icon-button" id="globalSearch" aria-label="搜索" title="搜索"><i data-lucide="search"></i></button>
+        <button class="icon-button" id="themeToggle" aria-label="切换主题" title="切换主题"><i data-lucide="moon"></i></button>
+      </div>
+    </header>
+
+    <div class="mobile-search" id="mobileSearch">
+      <label for="quickSearch">
+        <i data-lucide="search"></i>
+        <input id="quickSearch" type="search" placeholder="搜索题目、题型、公司" autocomplete="off" />
+      </label>
+    </div>
+
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="学习目录">
+        <nav id="sideNav" class="side-nav"></nav>
+        <button class="clear-button" id="resetProgress">
+          <i data-lucide="trash-2"></i>
+          清空学习进度
+        </button>
+      </aside>
+
+      <main class="doc-main">
+        <article id="content" class="doc-content" tabindex="-1"></article>
+      </main>
+
+      <aside class="toc" aria-label="页面目录">
+        <strong>此页内容</strong>
+        <nav id="tocNav"></nav>
+      </aside>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+    <script src="problems-data.js?v=20260604-note-render"></script>
+    <script src="app.js?v=20260604-note-render"></script>
+  </body>
+</html>
