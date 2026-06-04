@@ -26,9 +26,10 @@ const pages = {
   },
   review: {
     title: "面试复盘",
-    toc: ["口述结构", "边界清单", "限时训练"],
+    toc: ["批注总览", "口述结构", "边界清单", "限时训练"],
     body: `
       <p>算法题做完不算结束。秋招面试里，能把思路讲清楚和写出代码同样重要。</p>
+      <h2 id="批注总览">批注总览</h2>
       <h2 id="口述结构">口述结构</h2>
       <p>先说暴力做法，再说优化点，最后解释为什么当前题型适合这个数据结构或算法模板。</p>
       <h2 id="边界清单">边界清单</h2>
@@ -118,6 +119,15 @@ function reviewNoteStorageKey(problemId) {
 
 function getReviewNote(problemId) {
   return localStorage.getItem(reviewNoteStorageKey(problemId)) || "";
+}
+
+function reviewNotes() {
+  return problems
+    .map((problem) => ({
+      problem,
+      note: getReviewNote(problem.id).trim(),
+    }))
+    .filter((item) => item.note);
 }
 
 function problemById(id) {
@@ -361,6 +371,59 @@ function renderGenericPage(route) {
   els.content.innerHTML = `<h1>${page.title}</h1>${page.body}`;
 }
 
+function renderReviewPage() {
+  const notes = reviewNotes();
+  const completedWithNotes = notes.filter(({ problem }) => state.completed.has(problem.id)).length;
+  renderToc(pages.review.toc);
+  els.content.innerHTML = `
+    <h1>面试复盘</h1>
+    <p>算法题做完不算结束。秋招面试里，能把思路讲清楚和写出代码同样重要。</p>
+    <h2 id="批注总览">批注总览</h2>
+    <div class="review-summary">
+      <div class="stat-card"><b>${notes.length}</b><span>已写批注</span></div>
+      <div class="stat-card"><b>${completedWithNotes}</b><span>已掌握且有批注</span></div>
+      <div class="stat-card"><b>${problems.length - notes.length}</b><span>待补复盘</span></div>
+    </div>
+    ${
+      notes.length
+        ? `
+          <div class="review-note-grid">
+            ${notes
+              .map(
+                ({ problem, note }) => `
+                  <article class="review-note-card" data-problem="${problem.id}" role="button" tabindex="0" aria-label="打开 ${problem.title} 的批注">
+                    <div class="review-card-head">
+                      <div>
+                        <span class="chip green">${problem.topic}</span>
+                        <span class="chip difficulty ${problem.difficulty}">${problem.difficulty}</span>
+                      </div>
+                      <span class="review-state">${state.completed.has(problem.id) ? "已掌握" : "待巩固"}</span>
+                    </div>
+                    <h3>${problem.title}</h3>
+                    <p class="review-note-text">${escapeHtml(note)}</p>
+                  </article>
+                `
+              )
+              .join("")}
+          </div>
+        `
+        : `
+          <div class="empty-review">
+            <strong>还没有批注</strong>
+            <p>进入任意题目详情，在「复盘」里的「我的批注」写下口述答案或卡点，这里会自动汇总。</p>
+            <button class="ghost-button" data-route="problems" type="button">${icon("book-open")}去题单补第一条</button>
+          </div>
+        `
+    }
+    <h2 id="口述结构">口述结构</h2>
+    <p>先说暴力做法，再说优化点，最后解释为什么当前题型适合这个数据结构或算法模板。</p>
+    <h2 id="边界清单">边界清单</h2>
+    <p>每题至少检查空输入、重复元素、极端长度、下标越界和返回值格式。</p>
+    <h2 id="限时训练">限时训练</h2>
+    <p>Easy 控制在 10 分钟，Medium 先控制在 30 分钟，稳定后再缩到 20 分钟。</p>
+  `;
+}
+
 function renderRoadmap() {
   const grouped = Object.entries(topicMeta)
     .map(([topic, meta]) => {
@@ -590,6 +653,7 @@ function render() {
   if (state.route === "roadmap") renderRoadmap();
   else if (state.route === "problems") renderProblemList();
   else if (state.route === "company") renderCompanyPractice();
+  else if (state.route === "review") renderReviewPage();
   else if (state.route.startsWith("problem:")) renderProblemDetail(state.route.slice("problem:".length));
   else renderGenericPage(state.route);
 
@@ -710,7 +774,7 @@ function bindEvents() {
       return;
     }
 
-    const card = event.target.closest(".problem-card[data-problem]");
+    const card = event.target.closest(".problem-card[data-problem], .review-note-card[data-problem]");
     if (!card) return;
     event.preventDefault();
     setProblem(card.dataset.problem);

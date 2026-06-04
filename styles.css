@@ -450,7 +450,9 @@ a {
 .problem-card,
 .stat-card,
 .company-card,
+.review-note-card,
 .review-note-panel,
+.empty-review,
 .code-card {
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -766,6 +768,84 @@ a {
   flex-wrap: wrap;
   gap: 10px;
   margin: 24px 0 8px;
+}
+
+.review-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 18px 0 18px;
+}
+
+.review-note-grid {
+  display: grid;
+  gap: 12px;
+  margin: 18px 0 30px;
+}
+
+.review-note-card {
+  display: grid;
+  gap: 10px;
+  padding: 15px;
+  text-align: left;
+  transition: border-color 0.16s ease, background 0.16s ease, transform 0.16s ease;
+}
+
+.review-note-card:hover,
+.review-note-card:focus-visible {
+  border-color: #4a5365;
+  background: var(--panel-hover);
+  outline: 0;
+  transform: translateY(-1px);
+}
+
+.review-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.review-card-head > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.review-state {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.review-note-card h3 {
+  margin: 0;
+  color: var(--strong);
+  font-size: 18px;
+}
+
+.review-note-text {
+  margin: 0;
+  color: #c6c8d0;
+  white-space: pre-wrap;
+}
+
+.empty-review {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+  margin: 18px 0 30px;
+  padding: 16px;
+}
+
+.empty-review strong {
+  color: var(--strong);
+  font-size: 18px;
+}
+
+.empty-review p {
+  margin: 0;
 }
 
 .review-note-panel {
@@ -1160,7 +1240,9 @@ body.light .callout,
 body.light .problem-card,
 body.light .stat-card,
 body.light .company-card,
+body.light .review-note-card,
 body.light .review-note-panel,
+body.light .empty-review,
 body.light .roadmap-item,
 body.light .search-box input,
 body.light .filter-group {
@@ -1178,7 +1260,9 @@ body.light .filter-pill.is-active {
 }
 
 body.light .roadmap-item:hover,
-body.light .roadmap-item:focus-visible {
+body.light .roadmap-item:focus-visible,
+body.light .review-note-card:hover,
+body.light .review-note-card:focus-visible {
   border-color: rgba(89, 183, 255, 0.55);
   background: #f7fbff;
 }
@@ -1457,6 +1541,7 @@ body.light .hljs-punctuation {
 
   .problem-toolbar,
   .progress-dashboard,
+  .review-summary,
   .problem-grid,
   .company-grid {
     grid-template-columns: 1fr;
