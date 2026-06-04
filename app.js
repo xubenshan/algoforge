@@ -9,19 +9,8 @@ const sections = [
 const pages = {
   intro: {
     title: "算法笔记配套站",
-    toc: ["定位", "学习方式", "当前版本"],
+    toc: ["开始", "网站信息"],
     body: `
-      <p>AlgoForge 是 <strong>算法笔记.md</strong> 的配套练习站。题目、思路和 C++ 模板都围绕笔记展开，网站负责把它们整理成路线、题单、力扣跳转和进度记录。</p>
-      <h2 id="定位">定位</h2>
-      <p>这里不是重新写一套教程，而是把你的笔记变成可刷、可复盘、可按公司专题训练的学习工作台。</p>
-      <h2 id="学习方式">学习方式</h2>
-      <ul>
-        <li>先从「路线」确定本周主题。</li>
-        <li>进入「题单」筛选题型，点击题目看笔记里的思路、C++ 模板和力扣链接。</li>
-        <li>需要面试冲刺时，进入「公司题」按手撕题和机试题组合练习。</li>
-      </ul>
-      <h2 id="当前版本">当前版本</h2>
-      <p>当前已整理笔记中的核心题目，并补充力扣链接。后续可以继续把公司真题、限时机试和错题本接进来。</p>
     `,
   },
   review: {
@@ -365,6 +354,34 @@ function renderGenericPage(route) {
   els.content.innerHTML = `<h1>${page.title}</h1>${page.body}`;
 }
 
+function renderIntroPage() {
+  renderToc(pages.intro.toc);
+  els.content.innerHTML = `
+    <section class="home-hero" id="开始">
+      <div class="home-logo-wrap" aria-hidden="true">
+        <img src="assets/algoforge-logo.png?v=20260604-logo" alt="" />
+      </div>
+      <div class="home-hero-copy">
+        <p class="home-kicker">秋招算法学习工作台</p>
+        <h1>AlgoForge</h1>
+        <p class="home-subtitle">把算法笔记整理成可刷题、可复盘、可按公司专题训练的面试准备站。</p>
+        <div class="home-actions">
+          <button class="home-button primary" data-route="problems" type="button">${icon("book-open")}开始刷题</button>
+          <button class="home-button" data-route="roadmap" type="button">${icon("map")}学习路线</button>
+        </div>
+      </div>
+    </section>
+    <section class="home-info" id="网站信息">
+      <div>
+        <h2>网站信息</h2>
+        <p>AlgoForge 是面向秋招、实习和笔试冲刺的算法学习网站。它把算法笔记中的核心题目整理成清晰的学习路线、专题题单和公司训练包，方便按照题型持续刷题。</p>
+        <p>每道题都保留题目描述、思路笔记、C++ 代码模板和力扣入口。刷题后的掌握状态、今日题目和复盘批注会保存在当前浏览器本地，适合日常滚动复习和面试前集中回看。</p>
+        <p>推荐使用方式是先从路线确定阶段目标，再进入题单独立完成题目，最后在复盘中记录自己的口述答案、边界卡点和二刷提醒。</p>
+      </div>
+    </section>
+  `;
+}
+
 function renderReviewPage() {
   const notes = reviewNotes();
   const completedWithNotes = notes.filter(({ problem }) => state.completed.has(problem.id)).length;
@@ -638,7 +655,8 @@ function render() {
   renderTopNav();
   renderSideNav();
 
-  if (state.route === "roadmap") renderRoadmap();
+  if (state.route === "intro") renderIntroPage();
+  else if (state.route === "roadmap") renderRoadmap();
   else if (state.route === "problems") renderProblemList();
   else if (state.route === "company") renderCompanyPractice();
   else if (state.route === "review") renderReviewPage();
