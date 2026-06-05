@@ -290,6 +290,25 @@ a {
   outline: 0;
 }
 
+body.home-page .app-shell {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+body.home-page .sidebar,
+body.home-page .toc {
+  display: none;
+}
+
+body.home-page .doc-main {
+  display: flex;
+  justify-content: center;
+}
+
+body.home-page .doc-content {
+  width: min(100%, 1180px);
+  padding-inline: 44px;
+}
+
 .doc-content h1 {
   margin: 0 0 28px;
   padding-bottom: 28px;
@@ -1557,6 +1576,10 @@ body.light .hljs-punctuation {
   .sidebar {
     padding-left: 16px;
   }
+
+  body.home-page .app-shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 @media (max-width: 1180px) {
@@ -1580,6 +1603,10 @@ body.light .hljs-punctuation {
     width: 100%;
   }
 
+  body.home-page .doc-content {
+    width: min(100%, 1040px);
+  }
+
   .home-hero {
     gap: 46px;
   }
@@ -1596,6 +1623,10 @@ body.light .hljs-punctuation {
   }
 
   .top-nav {
+    display: none;
+  }
+
+  body.home-page .mobile-menu-button {
     display: none;
   }
 
@@ -1645,6 +1676,10 @@ body.light .hljs-punctuation {
   .app-shell {
     display: block;
     padding-top: var(--topbar);
+  }
+
+  body.home-page .doc-main {
+    display: block;
   }
 
   .sidebar {

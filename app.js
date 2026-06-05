@@ -665,6 +665,7 @@ function renderProblemDetail(problemId) {
 
 function render() {
   document.body.classList.toggle("light", state.theme === "light");
+  document.body.classList.toggle("home-page", state.route === "intro");
   renderTopNav();
   renderSideNav();
 
