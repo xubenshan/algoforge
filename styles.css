@@ -19,9 +19,6 @@
   --danger: #ef7867;
   --radius: 8px;
   --topbar: 70px;
-  --code-font: "Maple Mono NF CN", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --code-font-size: 14px;
-  --code-line-height: 1.58;
   font-family: "Inter", "Noto Sans SC", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
@@ -347,7 +344,7 @@ a {
   border-radius: 5px;
   background: rgba(89, 183, 255, 0.1);
   color: #9fd1ff;
-  font-size: var(--code-font-size);
+  font-size: 0.92em;
 }
 
 .home-hero {
@@ -534,10 +531,6 @@ a {
 .note-article pre:not(.code-pre) code {
   display: block;
   color: #d7dce8;
-  font-family: var(--code-font);
-  font-size: var(--code-font-size);
-  font-weight: 500;
-  line-height: var(--code-line-height);
   white-space: pre;
 }
 
@@ -1090,11 +1083,11 @@ pre,
 
 code,
 .code-lines {
-  font-family: var(--code-font);
+  font-family: "Maple Mono NF CN", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   color: #d7dce8;
-  font-size: var(--code-font-size);
+  font-size: 14px;
   font-weight: 500;
-  line-height: var(--code-line-height);
+  line-height: 1.55;
   letter-spacing: 0;
 }
 
@@ -1113,16 +1106,12 @@ code,
   padding-right: 14px;
   border-right: 1px solid #2d3440;
   color: #7f8794;
-  font-size: var(--code-font-size);
-  line-height: var(--code-line-height);
   text-align: right;
   user-select: none;
 }
 
 .line-code {
   padding: 0 18px;
-  font-size: var(--code-font-size);
-  line-height: var(--code-line-height);
   white-space: pre;
 }
 
@@ -1810,6 +1799,10 @@ body.light .hljs-punctuation {
   .company-problems button {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .code-lines {
+    font-size: 14px;
   }
 
   .code-line {
