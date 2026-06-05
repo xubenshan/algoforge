@@ -81,6 +81,8 @@ const els = {
   sideNav: document.querySelector("#sideNav"),
   tocNav: document.querySelector("#tocNav"),
   mobileSearch: document.querySelector("#mobileSearch"),
+  mobileMenuToggle: document.querySelector("#mobileMenuToggle"),
+  sidebarScrim: document.querySelector("#sidebarScrim"),
   quickSearch: document.querySelector("#quickSearch"),
 };
 
@@ -94,6 +96,14 @@ function renderIcons() {
 
 function saveCompleted() {
   localStorage.setItem("af-completed", JSON.stringify([...state.completed]));
+}
+
+function setSidebarOpen(open) {
+  document.body.classList.toggle("sidebar-open", open);
+  if (els.mobileMenuToggle) {
+    els.mobileMenuToggle.setAttribute("aria-expanded", String(open));
+    els.mobileMenuToggle.setAttribute("aria-label", open ? "关闭侧边栏" : "打开侧边栏");
+  }
 }
 
 function reviewNoteStorageKey(problemId) {
@@ -294,6 +304,7 @@ function progressScore() {
 function setRoute(route) {
   state.route = route;
   location.hash = route;
+  setSidebarOpen(false);
   render();
   scrollToContentTop();
 }
@@ -301,6 +312,7 @@ function setRoute(route) {
 function setProblem(problemId) {
   state.route = `problem:${problemId}`;
   location.hash = `problem-${problemId}`;
+  setSidebarOpen(false);
   render();
   scrollToContentTop();
 }
@@ -311,6 +323,7 @@ function showTopicProblems(topic) {
   state.keyword = "";
   state.difficulty = "all";
   location.hash = "problems";
+  setSidebarOpen(false);
   render();
   scrollToContentTop();
 }
@@ -668,6 +681,14 @@ function render() {
 }
 
 function bindEvents() {
+  els.mobileMenuToggle.addEventListener("click", () => {
+    setSidebarOpen(!document.body.classList.contains("sidebar-open"));
+  });
+
+  els.sidebarScrim.addEventListener("click", () => {
+    setSidebarOpen(false);
+  });
+
   document.body.addEventListener("input", (event) => {
     const reviewNote = event.target.closest("[data-review-note]");
     if (reviewNote) {
@@ -757,6 +778,7 @@ function bindEvents() {
 
   document.querySelector("#globalSearch").addEventListener("click", () => {
     state.route = "problems";
+    setSidebarOpen(false);
     render();
     const input = document.querySelector("#problemSearch");
     if (input) input.focus();
@@ -792,6 +814,7 @@ function applyHashRoute() {
   if (!hash) return;
   if (hash.startsWith("problem-")) state.route = `problem:${hash.replace("problem-", "")}`;
   else if (pages[hash] || hash === "roadmap" || hash === "problems" || hash === "company" || hash === "review") state.route = hash;
+  setSidebarOpen(false);
   render();
   scrollToContentTop();
 }

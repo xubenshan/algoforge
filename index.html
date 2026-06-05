@@ -17,10 +17,13 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=20260605-home-info" />
+    <link rel="stylesheet" href="styles.css?v=20260605-mobile-sidebar" />
   </head>
   <body>
     <header class="topbar">
+      <button class="icon-button mobile-menu-button" id="mobileMenuToggle" aria-label="打开侧边栏" aria-expanded="false">
+        <i data-lucide="menu"></i>
+      </button>
       <a class="brand" href="#intro" data-route="intro" aria-label="AlgoForge 首页">
         <img class="brand-avatar" src="assets/algoforge-logo.png?v=20260604-logo" alt="AlgoForge" />
         <strong>AlgoForge</strong>
@@ -38,6 +41,8 @@
         <button class="icon-button" id="themeToggle" aria-label="切换主题" title="切换主题"><i data-lucide="moon"></i></button>
       </div>
     </header>
+
+    <button class="sidebar-scrim" id="sidebarScrim" aria-label="关闭侧边栏"></button>
 
     <div class="mobile-search" id="mobileSearch">
       <label for="quickSearch">
@@ -69,6 +74,6 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
     <script src="problems-data.js?v=20260604-review-notes"></script>
-    <script src="app.js?v=20260605-home-info"></script>
+    <script src="app.js?v=20260605-mobile-sidebar"></script>
   </body>
 </html>
