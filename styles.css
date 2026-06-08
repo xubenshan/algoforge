@@ -382,22 +382,15 @@ body.home-page .doc-content {
 }
 
 .home-logo-wrap img {
-  width: min(100%, 420px);
+  width: min(100%, 370px);
   aspect-ratio: 1;
-  border-radius: 42px;
+  border-radius: 38px;
   object-fit: cover;
-  filter: drop-shadow(0 34px 68px rgba(0, 0, 0, 0.34));
+  filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.32));
 }
 
 .home-hero-copy {
   min-width: 0;
-}
-
-.doc-content .home-kicker {
-  margin: 0 0 14px;
-  color: var(--muted);
-  font-size: 20px;
-  font-weight: 800;
 }
 
 .doc-content .home-hero h1 {
@@ -477,7 +470,7 @@ body.home-page .doc-content {
 .home-info p {
   max-width: 980px;
   color: #a7abb6;
-  font-size: 19px;
+  font-size: 17px;
   font-weight: 700;
   line-height: 1.8;
 }
@@ -1614,7 +1607,7 @@ body.light .hljs-punctuation {
   }
 
   .home-logo-wrap img {
-    width: min(100%, 330px);
+    width: min(100%, 300px);
   }
 
   .doc-content .home-hero h1 {
@@ -1788,7 +1781,7 @@ body.light .hljs-punctuation {
   }
 
   .home-logo-wrap img {
-    width: min(62vw, 250px);
+    width: min(58vw, 220px);
     border-radius: 24px;
   }
 
@@ -1801,10 +1794,6 @@ body.light .hljs-punctuation {
     font-size: 18px;
   }
 
-  .doc-content .home-kicker {
-    font-size: 16px;
-  }
-
   .home-button {
     min-height: 46px;
     padding: 0 20px;
@@ -1812,7 +1801,7 @@ body.light .hljs-punctuation {
   }
 
   .home-info p {
-    font-size: 16px;
+    font-size: 15px;
   }
 
   .home-actions {

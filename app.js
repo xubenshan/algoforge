@@ -375,7 +375,6 @@ function renderIntroPage() {
         <img src="assets/algoforge-logo.png?v=20260604-logo" alt="" />
       </div>
       <div class="home-hero-copy">
-        <p class="home-kicker">秋招算法学习工作台</p>
         <h1>AlgoForge</h1>
         <p class="home-subtitle">把算法笔记整理成可刷题、可复盘、可按公司专题训练的面试准备站。</p>
         <div class="home-actions">
