@@ -41,7 +41,7 @@ const companySets = [
     company: "字节跳动",
     mode: "手撕高频",
     focus: "偏爱窗口、双指针和链表指针题，重点看边界表达和代码速度。",
-    titles: ["LRU 缓存"],
+    titles: ["两个栈实现队列", "LRU 缓存"],
   },
   {
     company: "腾讯",
@@ -53,19 +53,73 @@ const companySets = [
     company: "美团",
     mode: "机试速度",
     focus: "适合限时练习，优先训练快速读题、快速套模板和边界检查。",
-    titles: ["买卖股票的最佳时机", "数组中的第 K 个最大元素"],
+    titles: ["环形链表", "反转链表II", "合并两个有序链表", "LRU 缓存", "合并有序数组", "最长回文子串", "买卖股票的最佳时机", "数组中的第 K 个最大元素"],
   },
   {
     company: "阿里",
     mode: "结构化手撕",
     focus: "题目不一定刁钻，但会追问为什么这样写、有没有更清晰的返回值设计。",
-    titles: ["LRU 缓存", "字符串相乘"],
+    titles: ["二分查找", "LRU 缓存", "字符串相乘"],
   },
   {
     company: "华为",
     mode: "机试/笔试",
     focus: "适合用来做 30 分钟一组的模拟，训练题型切换和实现完整度。",
     titles: ["字符串解码", "滑动窗口最大值"],
+  },
+  {
+    company: "快手",
+    mode: "手撕高频",
+    focus: "覆盖链表、二叉树、排序和设计模式，适合集中练基础手写能力。",
+    titles: ["环形链表", "二叉树遍历", "单例模式", "快速排序", "两数之和", "二叉树的最近公共祖先", "有序链表转换二叉搜索树"],
+  },
+  {
+    company: "小米",
+    mode: "基础手写",
+    focus: "以基础数据结构和字符串题为主，适合练习稳定实现和边界表达。",
+    titles: ["合并两个有序链表", "二叉树遍历", "两数之和", "最长回文子串"],
+  },
+  {
+    company: "滴滴",
+    mode: "链表/哈希",
+    focus: "链表合并、缓存结构和哈希查找都适合作为限时手撕训练。",
+    titles: ["合并两个有序链表", "LRU 缓存", "两数之和"],
+  },
+  {
+    company: "哈啰",
+    mode: "链表基础",
+    focus: "聚焦链表环检测，重点说清快慢指针为什么一定相遇。",
+    titles: ["环形链表"],
+  },
+  {
+    company: "猿辅导",
+    mode: "链表区间",
+    focus: "重点训练局部反转里的前驱节点、断链和接链顺序。",
+    titles: ["反转链表II"],
+  },
+  {
+    company: "蘑菇街",
+    mode: "链表合并",
+    focus: "适合用虚拟头节点练习链表题的稳定写法。",
+    titles: ["合并两个有序链表"],
+  },
+  {
+    company: "小红书",
+    mode: "二叉树",
+    focus: "从递归定义和遍历顺序入手，练习基础树题口述。",
+    titles: ["二叉树遍历"],
+  },
+  {
+    company: "百度",
+    mode: "排序手写",
+    focus: "适合复习分区思想、递归边界和快排复杂度。",
+    titles: ["快速排序"],
+  },
+  {
+    company: "蔚来",
+    mode: "并发手写",
+    focus: "练习条件变量、线程顺序控制和唤醒条件表达。",
+    titles: ["三个线程交替打印 ABC"],
   },
 ];
 
@@ -132,6 +186,10 @@ function problemById(id) {
 
 function problemByTitle(title) {
   return allProblems.find((problem) => problem.title === title);
+}
+
+function companyProblemByTitle(title, company) {
+  return allProblems.find((problem) => problem.title === title && problemSourceForCompany(problem, company));
 }
 
 function escapeHtml(value) {
@@ -587,9 +645,7 @@ function renderCompanyPractice() {
     <div class="company-grid">
       ${companySets
         .map((set) => {
-          const setProblems = set.titles
-            .map(problemByTitle)
-            .filter((problem) => problem && problemSourceForCompany(problem, set.company));
+          const setProblems = set.titles.map((title) => companyProblemByTitle(title, set.company)).filter(Boolean);
           return `
             <article class="company-card">
               <div class="company-head">
@@ -644,7 +700,7 @@ function problemCard(problem) {
           <input type="checkbox" ${done ? "checked" : ""} data-complete="${problem.id}" />
           已掌握
         </label>
-        <a class="mini-button" href="${problem.leetcode}" target="_blank" rel="noreferrer" data-stop>${icon("external-link")}力扣</a>
+      <a class="mini-button" href="${problem.leetcode}" target="_blank" rel="noreferrer" data-stop>${icon("external-link")}${problem.externalLabel || "力扣"}</a>
       </div>
     </article>
   `;
@@ -667,7 +723,7 @@ function renderProblemDetail(problemId) {
     </div>
     <div class="detail-actions">
       <button class="ghost-button" data-route="${backRoute}">${icon("arrow-left")}${backLabel}</button>
-      <a class="ghost-button primary-link" href="${problem.leetcode}" target="_blank" rel="noreferrer">${icon("external-link")}打开力扣</a>
+      <a class="ghost-button primary-link" href="${problem.leetcode}" target="_blank" rel="noreferrer">${icon("external-link")}${problem.externalLabel || "打开力扣"}</a>
       <label class="checkbox-row ghost-button">
         <input type="checkbox" ${done ? "checked" : ""} data-complete="${problem.id}" />
         已掌握
