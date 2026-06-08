@@ -33,37 +33,39 @@ const topicMeta = {
 };
 
 const problems = window.AF_PROBLEMS || [];
+const companyExtraProblems = window.AF_COMPANY_EXTRA_PROBLEMS || [];
+const allProblems = [...problems, ...companyExtraProblems];
 
 const companySets = [
   {
     company: "字节跳动",
     mode: "手撕高频",
     focus: "偏爱窗口、双指针和链表指针题，重点看边界表达和代码速度。",
-    titles: ["无重复字符的最长子串", "三数之和", "K个一组翻转链表", "二叉树的右视图"],
+    titles: ["无重复字符的最长子串", "三数之和", "K个一组翻转链表", "二叉树的右视图", "最小覆盖子串", "排序链表"],
   },
   {
     company: "腾讯",
     mode: "基础稳定",
     focus: "重视经典数据结构题，要求思路稳、实现稳、复杂度能讲清楚。",
-    titles: ["反转链表", "环形链表II", "验证二叉搜索树", "二叉树的最近公共祖先"],
+    titles: ["反转链表", "环形链表II", "验证二叉搜索树", "二叉树的最近公共祖先", "合并两个有序链表", "二叉树的直径"],
   },
   {
     company: "美团",
     mode: "机试速度",
     focus: "适合限时练习，优先训练快速读题、快速套模板和边界检查。",
-    titles: ["长度最小的子数组", "搜索旋转排序数组", "接雨水", "重排链表"],
+    titles: ["长度最小的子数组", "搜索旋转排序数组", "接雨水", "重排链表", "岛屿数量", "前 K 个高频元素"],
   },
   {
     company: "阿里",
     mode: "结构化手撕",
     focus: "题目不一定刁钻，但会追问为什么这样写、有没有更清晰的返回值设计。",
-    titles: ["平衡二叉树", "二叉搜索树的最近公共祖先", "删除链表的倒数第N个结点", "在排序数组中查找元素的第一个和最后一个位置"],
+    titles: ["平衡二叉树", "二叉搜索树的最近公共祖先", "删除链表的倒数第N个结点", "在排序数组中查找元素的第一个和最后一个位置", "LRU 缓存", "合并区间"],
   },
   {
     company: "华为",
     mode: "机试/笔试",
     focus: "适合用来做 30 分钟一组的模拟，训练题型切换和实现完整度。",
-    titles: ["两数之和-有序数组", "乘积小于K的子数组", "寻找峰值", "删除排序链表中的重复元素II"],
+    titles: ["两数之和-有序数组", "乘积小于K的子数组", "寻找峰值", "删除排序链表中的重复元素II", "有效的括号", "字符串相加"],
   },
 ];
 
@@ -116,7 +118,7 @@ function getReviewNote(problemId) {
 }
 
 function reviewNotes() {
-  return problems
+  return allProblems
     .map((problem) => ({
       problem,
       note: getReviewNote(problem.id).trim(),
@@ -125,11 +127,11 @@ function reviewNotes() {
 }
 
 function problemById(id) {
-  return problems.find((problem) => problem.id === id) || problems[0];
+  return allProblems.find((problem) => problem.id === id) || allProblems[0];
 }
 
 function problemByTitle(title) {
-  return problems.find((problem) => problem.title === title);
+  return allProblems.find((problem) => problem.title === title);
 }
 
 function escapeHtml(value) {
@@ -298,8 +300,12 @@ function renderCodeBlock(code, language = "cpp") {
   `;
 }
 
+function coreCompletedCount() {
+  return problems.filter((problem) => state.completed.has(problem.id)).length;
+}
+
 function progressScore() {
-  return Math.round((state.completed.size / problems.length) * 100);
+  return Math.round((coreCompletedCount() / problems.length) * 100);
 }
 
 function setRoute(route) {
@@ -406,7 +412,7 @@ function renderReviewPage() {
     <div class="review-summary">
       <div class="stat-card"><b>${notes.length}</b><span>已写批注</span></div>
       <div class="stat-card"><b>${completedWithNotes}</b><span>已掌握且有批注</span></div>
-      <div class="stat-card"><b>${problems.length - notes.length}</b><span>待补复盘</span></div>
+      <div class="stat-card"><b>${allProblems.length - notes.length}</b><span>待补复盘</span></div>
     </div>
     ${
       notes.length
@@ -466,8 +472,8 @@ function renderRoadmap() {
     <h1>学习路线</h1>
     <h2 id="进度">进度</h2>
     <div class="progress-dashboard">
-      <div class="stat-card"><b>${state.completed.size}</b><span>已掌握</span></div>
-      <div class="stat-card"><b>${problems.length - state.completed.size}</b><span>待完成</span></div>
+      <div class="stat-card"><b>${coreCompletedCount()}</b><span>已掌握</span></div>
+      <div class="stat-card"><b>${problems.length - coreCompletedCount()}</b><span>待完成</span></div>
       <div class="stat-card"><b>${progressScore()}%</b><span>题单进度</span></div>
     </div>
     <h2 id="路线">路线</h2>
@@ -503,7 +509,7 @@ function renderProblemList() {
   els.content.innerHTML = `
     <h1>核心题单</h1>
     <div class="article-meta compact-meta">
-      <span class="chip green">${state.completed.size} / ${problems.length} 已掌握</span>
+      <span class="chip green">${coreCompletedCount()} / ${problems.length} 已掌握</span>
       <span class="chip gold">题单来自算法笔记</span>
     </div>
     <h2 id="筛选">筛选</h2>
@@ -549,7 +555,7 @@ function renderCompanyPractice() {
   renderToc(["训练包", "使用方式"]);
   els.content.innerHTML = `
     <h1>公司手撕 / 机试专题</h1>
-    <p>这个专题不脱离笔记另造题库，而是把 <strong>算法笔记.md</strong> 里的题按常见公司面试和机试节奏重新编组。点击题目仍然进入同一份笔记思路和 C++ 模板。</p>
+    <p>这个专题以 <strong>算法笔记.md</strong> 的题目为基础，额外补充一批公司训练题。笔记题和扩展题都可以进入详情页练习、标记掌握并记录复盘批注。</p>
     <h2 id="训练包">训练包</h2>
     <div class="company-grid">
       ${companySets
@@ -615,6 +621,8 @@ function renderProblemDetail(problemId) {
   const problem = problemById(problemId);
   const done = state.completed.has(problem.id);
   const reviewNote = getReviewNote(problem.id);
+  const backRoute = problem.source === "company-extra" ? "company" : "problems";
+  const backLabel = problem.source === "company-extra" ? "返回公司题" : "返回题单";
   const detailMarkdown = problem.noteMarkdown || problem.ideaMarkdown || problem.description || problemSummary(problem);
   const { statement, notes } = splitProblemNote(detailMarkdown);
   renderToc(notes ? ["题目", "思路与代码", "复盘"] : ["题目", "复盘"]);
@@ -625,7 +633,7 @@ function renderProblemDetail(problemId) {
       <span class="chip difficulty ${problem.difficulty}">${problem.difficulty}</span>
     </div>
     <div class="detail-actions">
-      <button class="ghost-button" data-route="problems">${icon("arrow-left")}返回题单</button>
+      <button class="ghost-button" data-route="${backRoute}">${icon("arrow-left")}${backLabel}</button>
       <a class="ghost-button primary-link" href="${problem.leetcode}" target="_blank" rel="noreferrer">${icon("external-link")}打开力扣</a>
       <label class="checkbox-row ghost-button">
         <input type="checkbox" ${done ? "checked" : ""} data-complete="${problem.id}" />
