@@ -41,31 +41,31 @@ const companySets = [
     company: "字节跳动",
     mode: "手撕高频",
     focus: "偏爱窗口、双指针和链表指针题，重点看边界表达和代码速度。",
-    titles: ["无重复字符的最长子串", "三数之和", "K个一组翻转链表", "二叉树的右视图", "LRU 缓存"],
+    titles: ["LRU 缓存"],
   },
   {
     company: "腾讯",
     mode: "基础稳定",
     focus: "重视经典数据结构题，要求思路稳、实现稳、复杂度能讲清楚。",
-    titles: ["反转链表", "环形链表II", "验证二叉搜索树", "二叉树的最近公共祖先", "合并区间"],
+    titles: ["合并区间"],
   },
   {
     company: "美团",
     mode: "机试速度",
     focus: "适合限时练习，优先训练快速读题、快速套模板和边界检查。",
-    titles: ["长度最小的子数组", "搜索旋转排序数组", "接雨水", "重排链表", "买卖股票的最佳时机", "数组中的第 K 个最大元素"],
+    titles: ["买卖股票的最佳时机", "数组中的第 K 个最大元素"],
   },
   {
     company: "阿里",
     mode: "结构化手撕",
     focus: "题目不一定刁钻，但会追问为什么这样写、有没有更清晰的返回值设计。",
-    titles: ["平衡二叉树", "二叉搜索树的最近公共祖先", "删除链表的倒数第N个结点", "在排序数组中查找元素的第一个和最后一个位置", "LRU 缓存", "字符串相乘"],
+    titles: ["LRU 缓存", "字符串相乘"],
   },
   {
     company: "华为",
     mode: "机试/笔试",
     focus: "适合用来做 30 分钟一组的模拟，训练题型切换和实现完整度。",
-    titles: ["两数之和-有序数组", "乘积小于K的子数组", "寻找峰值", "删除排序链表中的重复元素II", "字符串解码", "滑动窗口最大值"],
+    titles: ["字符串解码", "滑动窗口最大值"],
   },
 ];
 
@@ -420,7 +420,7 @@ function renderIntroPage() {
     <section class="home-info" id="网站信息">
       <div>
         <h2>网站信息</h2>
-        <p>AlgoForge 是面向秋招、实习和笔试冲刺的算法学习网站。它把算法笔记中的核心题目整理成清晰的学习路线、专题题单和公司训练包，方便按照题型持续刷题。</p>
+        <p>AlgoForge 是面向秋招、实习和笔试冲刺的算法学习网站。它把算法笔记中的核心题目整理成清晰的学习路线、专题题单和带来源的公司真题列表，方便按照题型持续刷题。</p>
         <p>每道题都保留题目描述、思路笔记、C++ 代码模板和力扣入口。刷题后的掌握状态、今日题目和复盘批注会保存在当前浏览器本地，适合日常滚动复习和面试前集中回看。</p>
         <p>推荐使用方式是先从路线确定阶段目标，再进入题单独立完成题目，最后在复盘中记录自己的口述答案、边界卡点和二刷提醒。</p>
       </div>
@@ -579,15 +579,17 @@ function renderProblemList() {
 }
 
 function renderCompanyPractice() {
-  renderToc(["训练包", "使用方式"]);
+  renderToc(["真题列表", "使用方式"]);
   els.content.innerHTML = `
-    <h1>公司手撕 / 机试专题</h1>
-    <p>这个专题以 <strong>算法笔记.md</strong> 的题目为基础，额外补充一批带公开来源的公司真题/面经题。带“来源”的题目可以直接跳回原始页面核对，不把无来源题包装成真题。</p>
-    <h2 id="训练包">训练包</h2>
+    <h1>公司面试真题</h1>
+    <p>这个模块只收录有公开面经或真题汇总来源的题目。每道题都保留“来源”入口，未找到对应公司来源的题不会放在这里。</p>
+    <h2 id="真题列表">真题列表</h2>
     <div class="company-grid">
       ${companySets
         .map((set) => {
-          const setProblems = set.titles.map(problemByTitle).filter(Boolean);
+          const setProblems = set.titles
+            .map(problemByTitle)
+            .filter((problem) => problem && problemSourceForCompany(problem, set.company));
           return `
             <article class="company-card">
               <div class="company-head">
@@ -606,13 +608,9 @@ function renderCompanyPractice() {
                       <div class="company-problem-row">
                         <button data-problem="${problem.id}">
                           <span>${problem.title}</span>
-                          <small>${problem.topic}${source ? " · 真题扩展" : ""}</small>
+                          <small>${problem.topic} · 面经来源</small>
                         </button>
-                        ${
-                          source
-                            ? `<a class="source-link" href="${escapeHtml(source.url)}" target="_blank" rel="noreferrer" data-stop title="${escapeHtml(source.evidence)}">${icon("link")}来源</a>`
-                            : ""
-                        }
+                        <a class="source-link" href="${escapeHtml(source.url)}" target="_blank" rel="noreferrer" data-stop title="${escapeHtml(source.evidence)}">${icon("link")}来源</a>
                       </div>
                     `;
                   })
@@ -626,7 +624,7 @@ function renderCompanyPractice() {
     <h2 id="使用方式">使用方式</h2>
     <div class="callout">
       <div class="callout-title">${icon("timer")}建议节奏</div>
-      <p>手撕专题每组 3 到 4 题，先限时写代码，再回到题目详情页对照笔记思路复盘边界、复杂度和口述表达。</p>
+      <p>先点来源核对题目记录，再进入详情页限时实现。做完后在复盘批注里记录口述思路、边界条件和复杂度表达。</p>
     </div>
   `;
 }
