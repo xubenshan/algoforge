@@ -1,5 +1,4 @@
 const sections = [
-  { id: "intro", icon: "file-text", title: "概览" },
   { id: "roadmap", icon: "map", title: "路线" },
   { id: "problems", icon: "book-open", title: "题单" },
   { id: "company", icon: "building-2", title: "公司题" },
