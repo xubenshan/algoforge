@@ -41,31 +41,31 @@ const companySets = [
     company: "字节跳动",
     mode: "手撕高频",
     focus: "偏爱窗口、双指针和链表指针题，重点看边界表达和代码速度。",
-    titles: ["无重复字符的最长子串", "三数之和", "K个一组翻转链表", "二叉树的右视图", "最小覆盖子串", "排序链表"],
+    titles: ["无重复字符的最长子串", "三数之和", "K个一组翻转链表", "二叉树的右视图", "LRU 缓存"],
   },
   {
     company: "腾讯",
     mode: "基础稳定",
     focus: "重视经典数据结构题，要求思路稳、实现稳、复杂度能讲清楚。",
-    titles: ["反转链表", "环形链表II", "验证二叉搜索树", "二叉树的最近公共祖先", "合并两个有序链表", "二叉树的直径"],
+    titles: ["反转链表", "环形链表II", "验证二叉搜索树", "二叉树的最近公共祖先", "合并区间"],
   },
   {
     company: "美团",
     mode: "机试速度",
     focus: "适合限时练习，优先训练快速读题、快速套模板和边界检查。",
-    titles: ["长度最小的子数组", "搜索旋转排序数组", "接雨水", "重排链表", "岛屿数量", "前 K 个高频元素"],
+    titles: ["长度最小的子数组", "搜索旋转排序数组", "接雨水", "重排链表", "买卖股票的最佳时机", "数组中的第 K 个最大元素"],
   },
   {
     company: "阿里",
     mode: "结构化手撕",
     focus: "题目不一定刁钻，但会追问为什么这样写、有没有更清晰的返回值设计。",
-    titles: ["平衡二叉树", "二叉搜索树的最近公共祖先", "删除链表的倒数第N个结点", "在排序数组中查找元素的第一个和最后一个位置", "LRU 缓存", "合并区间"],
+    titles: ["平衡二叉树", "二叉搜索树的最近公共祖先", "删除链表的倒数第N个结点", "在排序数组中查找元素的第一个和最后一个位置", "LRU 缓存", "字符串相乘"],
   },
   {
     company: "华为",
     mode: "机试/笔试",
     focus: "适合用来做 30 分钟一组的模拟，训练题型切换和实现完整度。",
-    titles: ["两数之和-有序数组", "乘积小于K的子数组", "寻找峰值", "删除排序链表中的重复元素II", "有效的括号", "字符串相加"],
+    titles: ["两数之和-有序数组", "乘积小于K的子数组", "寻找峰值", "删除排序链表中的重复元素II", "字符串解码", "滑动窗口最大值"],
   },
 ];
 
@@ -135,11 +135,38 @@ function problemByTitle(title) {
 }
 
 function escapeHtml(value) {
-  return value
+  return String(value)
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;");
+}
+
+function problemSourceForCompany(problem, company) {
+  if (!problem.sources) return null;
+  return problem.sources.find((source) => source.company === company) || null;
+}
+
+function renderProblemSources(problem) {
+  if (!problem.sources?.length) return "";
+  return `
+    <div class="source-panel">
+      <div class="source-panel-title">${icon("link")}真题来源</div>
+      <div class="source-list">
+        ${problem.sources
+          .map(
+            (source) => `
+              <a href="${escapeHtml(source.url)}" target="_blank" rel="noreferrer">
+                <strong>${escapeHtml(source.company)}</strong>
+                <span>${escapeHtml(source.label)}</span>
+                <small>${escapeHtml(source.evidence)}</small>
+              </a>
+            `
+          )
+          .join("")}
+      </div>
+    </div>
+  `;
 }
 
 function inlineMarkdown(value) {
@@ -555,7 +582,7 @@ function renderCompanyPractice() {
   renderToc(["训练包", "使用方式"]);
   els.content.innerHTML = `
     <h1>公司手撕 / 机试专题</h1>
-    <p>这个专题以 <strong>算法笔记.md</strong> 的题目为基础，额外补充一批公司训练题。笔记题和扩展题都可以进入详情页练习、标记掌握并记录复盘批注。</p>
+    <p>这个专题以 <strong>算法笔记.md</strong> 的题目为基础，额外补充一批带公开来源的公司真题/面经题。带“来源”的题目可以直接跳回原始页面核对，不把无来源题包装成真题。</p>
     <h2 id="训练包">训练包</h2>
     <div class="company-grid">
       ${companySets
@@ -573,14 +600,22 @@ function renderCompanyPractice() {
               <p>${set.focus}</p>
               <div class="company-problems">
                 ${setProblems
-                  .map(
-                    (problem) => `
-                      <button data-problem="${problem.id}">
-                        <span>${problem.title}</span>
-                        <small>${problem.topic}</small>
-                      </button>
-                    `
-                  )
+                  .map((problem) => {
+                    const source = problemSourceForCompany(problem, set.company);
+                    return `
+                      <div class="company-problem-row">
+                        <button data-problem="${problem.id}">
+                          <span>${problem.title}</span>
+                          <small>${problem.topic}${source ? " · 真题扩展" : ""}</small>
+                        </button>
+                        ${
+                          source
+                            ? `<a class="source-link" href="${escapeHtml(source.url)}" target="_blank" rel="noreferrer" data-stop title="${escapeHtml(source.evidence)}">${icon("link")}来源</a>`
+                            : ""
+                        }
+                      </div>
+                    `;
+                  })
                   .join("")}
               </div>
             </article>
@@ -641,6 +676,7 @@ function renderProblemDetail(problemId) {
       </label>
       <button class="ghost-button" data-focus="${problem.id}">${icon("pin")}加入今日</button>
     </div>
+    ${renderProblemSources(problem)}
     <h2 id="题目">题目</h2>
     <div class="note-article problem-statement">${renderNoteMarkdown(statement)}</div>
     ${

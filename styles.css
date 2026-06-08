@@ -903,6 +903,63 @@ body.home-page .doc-content {
   margin: 24px 0 8px;
 }
 
+.source-panel {
+  display: grid;
+  gap: 10px;
+  margin: 14px 0 20px;
+  padding: 14px;
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.source-panel-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--strong);
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.source-panel-title svg {
+  width: 16px;
+  height: 16px;
+  color: var(--blue);
+}
+
+.source-list {
+  display: grid;
+  gap: 8px;
+}
+
+.source-list a {
+  display: grid;
+  gap: 2px;
+  padding: 10px 12px;
+  border: 1px solid var(--line-soft);
+  border-radius: 7px;
+  background: rgba(32, 33, 40, 0.72);
+  color: var(--text);
+}
+
+.source-list a:hover {
+  border-color: rgba(96, 184, 255, 0.55);
+  color: var(--strong);
+}
+
+.source-list span {
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.source-list small {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
 .review-summary {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1253,6 +1310,13 @@ code,
   gap: 8px;
 }
 
+.company-problem-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: stretch;
+}
+
 .company-problems button {
   display: flex;
   align-items: center;
@@ -1276,6 +1340,33 @@ code,
   flex: 0 0 auto;
   color: var(--gold);
   font-weight: 800;
+}
+
+.source-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 40px;
+  padding: 0 11px;
+  border: 1px solid rgba(96, 184, 255, 0.25);
+  border-radius: 7px;
+  background: rgba(96, 184, 255, 0.08);
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.source-link:hover {
+  border-color: rgba(96, 184, 255, 0.62);
+  background: rgba(96, 184, 255, 0.14);
+  color: var(--strong);
+}
+
+.source-link svg {
+  width: 14px;
+  height: 14px;
 }
 
 .roadmap-list {
@@ -1373,6 +1464,7 @@ body.light .callout,
 body.light .problem-card,
 body.light .stat-card,
 body.light .company-card,
+body.light .source-panel,
 body.light .review-note-card,
 body.light .review-note-panel,
 body.light .empty-review,
@@ -1380,6 +1472,10 @@ body.light .roadmap-item,
 body.light .search-box input,
 body.light .filter-group {
   background: #fffdfa;
+}
+
+body.light .source-list a {
+  background: #f7f4ee;
 }
 
 body.light .filter-pill:hover {
@@ -1855,6 +1951,14 @@ body.light .hljs-punctuation {
   .company-problems button {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .company-problem-row {
+    grid-template-columns: 1fr;
+  }
+
+  .source-link {
+    width: 100%;
   }
 
   .code-lines {
