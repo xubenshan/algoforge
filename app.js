@@ -29,6 +29,7 @@ const topicMeta = {
   "二分查找": { icon: "split", plan: "阶段 3", note: "明确搜索区间和收缩条件。" },
   "链表": { icon: "workflow", plan: "阶段 4", note: "先画指针，再写更新顺序。" },
   "二叉树": { icon: "git-branch", plan: "阶段 5", note: "递归定义、遍历时机和返回值。" },
+  "回溯": { icon: "route", plan: "阶段 6", note: "画搜索树，明确选择、递归和撤销现场。" },
 };
 
 const problems = window.AF_PROBLEMS || [];
