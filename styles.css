@@ -1088,8 +1088,8 @@ body.home-page .doc-content {
 .code-card {
   overflow: hidden;
   margin: 16px 0 26px;
-  border-color: #343a46;
-  background: #282c34;
+  border-color: #363c47;
+  background: #282d36;
 }
 
 .code-window {
@@ -1103,8 +1103,8 @@ body.home-page .doc-content {
   justify-content: space-between;
   min-height: 34px;
   padding: 0 14px;
-  border-bottom: 1px solid rgba(171, 178, 191, 0.13);
-  background: #2b303a;
+  border-bottom: 1px solid #3a414d;
+  background: #282d36;
   color: #9aa3b5;
   font-size: 13px;
   font-weight: 800;
@@ -1146,7 +1146,7 @@ pre,
   margin: 0;
   overflow: auto;
   padding: 14px 0;
-  background: #282c34;
+  background: #282d36;
   tab-size: 4;
 }
 
@@ -1173,8 +1173,8 @@ code,
 
 .line-no {
   padding-right: 14px;
-  border-right: 1px solid #2d3440;
-  color: #7f8794;
+  border-right: 1px solid #38404c;
+  color: #89929f;
   text-align: right;
   user-select: none;
 }
