@@ -282,15 +282,18 @@ function markdownToHtml(markdown) {
 function renderNoteMarkdown(markdown) {
   if (!markdown) return "";
   const codeBlocks = [];
-  const prepared = markdown.replace(/```cpp\n([\s\S]*?)\n```/g, (_, code) => {
-    const token = `@@AF_CPP_BLOCK_${codeBlocks.length}@@`;
-    codeBlocks.push(code.trim());
-    return token;
-  });
+  const prepared = markdown
+    .replace(/^```cpp[^\n]*\n([\s\S]*?)^```[ \t]*$/gm, (_, code) => {
+      const token = `AFCPPCODEBLOCK${codeBlocks.length}TOKEN`;
+      codeBlocks.push(code.trim());
+      return token;
+    })
+    .replace(/==([^=\n]+)==/g, "<mark>$1</mark>");
   let html = markdownToHtml(prepared);
   codeBlocks.forEach((code, index) => {
-    html = html.replace(`<p>@@AF_CPP_BLOCK_${index}@@</p>`, renderCodeBlock(code, "cpp"));
-    html = html.replace(`@@AF_CPP_BLOCK_${index}@@`, renderCodeBlock(code, "cpp"));
+    const token = `AFCPPCODEBLOCK${index}TOKEN`;
+    html = html.replace(`<p>${token}</p>`, renderCodeBlock(code, "cpp"));
+    html = html.replace(token, renderCodeBlock(code, "cpp"));
   });
   return html;
 }
@@ -600,7 +603,7 @@ function renderProblemList() {
     <h2 id="筛选">筛选</h2>
     <div class="problem-toolbar">
       <label class="search-box" for="problemSearch">${icon("search")}<input id="problemSearch" type="search" placeholder="搜索题目或题型" value="${escapeHtml(state.keyword)}" autocomplete="off" /></label>
-      <div class="filter-group" role="group" aria-label="按题型筛选">
+      <div class="filter-group topic-filter-group" role="group" aria-label="按题型筛选">
         ${topicOptions
           .map(
             (topic) => `
