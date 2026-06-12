@@ -29,6 +29,7 @@ const topicMeta = {
   "链表": { icon: "workflow", plan: "阶段 4", note: "先画指针，再写更新顺序。" },
   "二叉树": { icon: "git-branch", plan: "阶段 5", note: "递归定义、遍历时机和返回值。" },
   "回溯": { icon: "route", plan: "阶段 6", note: "画搜索树，明确选择、递归和撤销现场。" },
+  "动态规划": { icon: "chart-no-axes-combined", plan: "阶段 7", note: "定义状态，写出转移方程、初始值和遍历顺序。" },
 };
 
 const problems = window.AF_PROBLEMS || [];
